@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>CHATBOT</h2>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- 채팅 내용이 여기에 추가됩니다 -->
+        </div>
+        <div class="chat-input">
+            <form id="chat-form" enctype="multipart/form-data">
+                <input type="text" id="user-input" name="prompt" placeholder="메시지를 입력해 주세요...">
+                <input type="file" id="file-input" name="file">
+                <button type="submit">전송</button>
+            </form>
+        </div>
+    </div>
+    <script src="static/app.js"></script>
+</body>
+</html>
