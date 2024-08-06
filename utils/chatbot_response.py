@@ -21,7 +21,7 @@ def generate_response(prompt):
 
 def extract_text_from_image(image):
     try:
-        text = pytesseract.image_to_string(image, lang='kor')
+        text = pytesseract.image_to_string(image, lang='kor+eng')
         return text
     except Exception as e:
         return f"텍스트 추출 중 오류 발생: {e}"
