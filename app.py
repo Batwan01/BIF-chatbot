@@ -33,8 +33,9 @@ def chat():
 
             if "설명해줘" in prompt:
                 text = extract_text_from_image(image)
+                summary = summarize_text_with_gpt(text)
                 image_base64 = encode_image(image)
-                return jsonify({"response": f"설명서 내용: {text}", "image": image_base64})
+                return jsonify({"response": f"설명서 내용: {summary}", "image": image_base64})
 
             if "장례식장" in prompt:
                 result = classify_image(image, event='funeral')
@@ -66,12 +67,10 @@ def chat():
             response = generate_response(prompt)
             return jsonify({"response": response})
 
-        return jsonify({"error": "프롬프트를 입력해주세요."})
+        return jsonify({"error": "메시지를 입력해주세요."})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
-
-#설명해줘 추가해야함
