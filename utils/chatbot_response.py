@@ -47,4 +47,4 @@ def summarize_text_with_gpt(text):
         return f"요약 중 오류 발생: {e}"
 
 def create_prompt(user_input):
-    return f"사용자의 입력: {user_input}. 경계성 지능장애를 고려하여 쉽게 이해할 수 있는 답변을 생성합니다."
+    return f"사용자의 입력: {user_input}. 이 사용자는 초등학교 5학년 수준의 이해력을 가지고 있으므로, 어려운 말은 이해하지 못합니다. 쉽게 설명해 주세요. 초등학교 5학년 수준의 이해력은 언급하지 않았으면 좋겠습니다."
