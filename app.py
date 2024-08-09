@@ -3,6 +3,7 @@ import base64
 from flask import Flask, request, jsonify, render_template
 from utils.image_processing import classify_image
 from utils.chatbot_response import generate_response, create_prompt, extract_text_from_image, summarize_text_with_gpt
+from utils.ocr_response import extract_text_using_google_vision, simplify_text_with_gpt, save_text_to_jpeg  # 추가된 부분
 from PIL import Image
 from io import BytesIO
 import openai
@@ -25,10 +26,10 @@ def encode_image(image):
     return base64.b64encode(buffered.getvalue()).decode('utf-8')
 
 def handle_image_prompt(prompt, image):
-    if "설명해줘" in prompt:
-        text = extract_text_from_image(image)
-        summary = summarize_text_with_gpt(text)
-        return f"설명서 내용: {summary}"
+    #if "설명해줘" in prompt:
+    #    text = extract_text_from_image(image)
+    #    summary = summarize_text_with_gpt(text)
+    #    return f"설명서 내용: {summary}"
 
     if "장례식장" in prompt:
         result = classify_image(image, event='funeral')
@@ -43,7 +44,21 @@ def handle_image_prompt(prompt, image):
             return "결혼식장에 적합한 옷차림입니다! (결혼식에 대한 예의 설명)"
         else:
             return "결혼식장에 적합한 옷차림이 아닙니다! 흰색 옷과 노출이 심한 옷은 결혼식에 적합하지 않아요!"
-    return None
+        
+    if "설명해줘" in prompt:
+        try:
+            # Google Vision API를 통해 텍스트 추출
+            extracted_text = extract_text_using_google_vision(image)
+            # GPT를 통해 텍스트를 쉽게 변환
+            simplified_text = simplify_text_with_gpt(extracted_text)
+            jpeg_path = 'image/simplified_text.jpeg'
+            save_text_to_jpeg(simplified_text, jpeg_path)
+            # 결과를 JPEG로 저장
+            simplified_text = simplified_text.replace("\n", "<br>")
+            return "쉽게 설명해 드릴게요!.", simplified_text
+        except Exception as e:
+            return f"텍스트 변환 및 이미지 생성 중 오류 발생: {e}", None
+
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -65,7 +80,6 @@ def chat():
             return jsonify({"response": "이미지를 업로드 해주세요."})
 
         prompt = create_prompt(prompt)
-        print(prompt)
         response = generate_response(prompt)
         return jsonify({"response": response})
 
