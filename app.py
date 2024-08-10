@@ -2,7 +2,7 @@ import os
 import base64
 from flask import Flask, request, jsonify, render_template
 from utils.image_processing import classify_image
-from utils.chatbot_response import generate_response, create_prompt, extract_text_from_image, summarize_text_with_gpt
+from utils.chatbot_response import generate_response, create_prompt, summarize_text_with_gpt #extract_text_from_image, 
 from utils.ocr_response import extract_text_using_google_vision, simplify_text_with_gpt, save_text_to_jpeg  # 추가된 부분
 from PIL import Image
 from io import BytesIO
@@ -26,24 +26,27 @@ def encode_image(image):
     return base64.b64encode(buffered.getvalue()).decode('utf-8')
 
 def handle_image_prompt(prompt, image):
-    #if "설명해줘" in prompt:
-    #    text = extract_text_from_image(image)
-    #    summary = summarize_text_with_gpt(text)
-    #    return f"설명서 내용: {summary}"
+    if "요약해줘" in prompt:
+        summary = summarize_text_with_gpt(simplified_text)
+        return f"요약 내용: {summary}"
 
     if "장례식장" in prompt:
         result = classify_image(image, event='funeral')
         if result['funeral'] == 'Appropriate':
-            return "장례식장에 적합한 옷차림입니다! (고인에 대한 언급 자제 등 예의 설명)"
+            response = generate_response("대한민국 장례식장에 대한 예의에 대해 짧게 설명해줘, 대답은 안 해도 돼")
+            return "장례식장에 적합한 옷차림입니다!<br>", response
         else:
-            return "장례식장에 적합한 옷차림이 아닙니다! 검정색에 가까운 옷을 선택해야 하고, 노출이 심한 옷은 장례식에 적합하지 않아요!"
-
+            response = generate_response("대한민국 장례식장 복장에 대해 짧게 설명해줘, 대답은 안 해도 돼")
+            return "장례식장에 적합하지 않은 옷차림입니다!<br>", response
+        
     if "결혼식장" in prompt:
         result = classify_image(image, event='wedding')
         if result['wedding'] == 'Appropriate':
-            return "결혼식장에 적합한 옷차림입니다! (결혼식에 대한 예의 설명)"
+            response = generate_response("대한민국 결혼식장에 대한 예의에 대해 짧게 설명해줘, 관계에 따른 축의금도 말해줘, 대답은 안 해도 돼")
+            return "결혼식장에 적합한 옷차림입니다!<br>", response
         else:
-            return "결혼식장에 적합한 옷차림이 아닙니다! 흰색 옷과 노출이 심한 옷은 결혼식에 적합하지 않아요!"
+            response = generate_response("대한민국 결혼식장에 복장에 대해 짧게 설명해줘, 대답은 안 해도 돼")
+            return "결혼식장에 적합한 옷차림이 아닙니다!<br>", response
         
     if "설명해줘" in prompt:
         try:
@@ -82,7 +85,6 @@ def chat():
         prompt = create_prompt(prompt)
         response = generate_response(prompt)
         return jsonify({"response": response})
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
