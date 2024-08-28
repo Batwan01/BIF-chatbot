@@ -17,6 +17,7 @@
 ## OCR -> simplify text
 <br>
 
-![image](https://github.com/user-attachments/assets/cf5344e3-c073-4a0d-979e-33f98179e65b)
 
-![image](https://github.com/user-attachments/assets/7dc873ea-a76a-4df4-8d28-193269573183)
+![코로나](https://github.com/user-attachments/assets/98916b42-4bc2-4b63-a0ce-7efd7c7341b9)
+
+![설명](https://github.com/user-attachments/assets/29f2cf41-3af3-4b8b-8bd1-2039d60269a2)
