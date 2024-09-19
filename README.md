@@ -1,8 +1,11 @@
-## Chat
+## Chat ( 일상적인 대화 )
 <br>
 
 ![image](https://github.com/user-attachments/assets/413bc49b-ed15-4f88-9547-e296583fa92d)
 
+## Img Classification
+- 행사에 맞게 입었을 때 : 행사에 맞는 예의 설명
+- 행상에 맞게 입지 않았을 때 : 복장에 대한 예의 설명
 <br>
 
 ![image](https://github.com/user-attachments/assets/f3fd8a03-80b2-43a2-b919-d5cb00edef3d)
@@ -15,6 +18,7 @@
 <br>
 
 ## OCR -> simplify text
+- OCR로 설명서 분석 -> 어려운 단어, 문장을 쉽게 설명 
 <br>
 
 
